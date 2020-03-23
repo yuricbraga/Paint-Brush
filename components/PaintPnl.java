@@ -9,23 +9,23 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class PaintPnl extends JPanel{
-  int MODE;
+  Configurations configurations;
   ArrayList<Point> points;
   ArrayList<Point[]> lines;
   ArrayList<Point[]> linesB;
 
-  public PaintPnl(){
+  public PaintPnl(Configurations configurations){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setBackground(Color.WHITE);
-    MODE = 2;
-    points = new ArrayList<>();
-    lines = new ArrayList<>();
-    linesB = new ArrayList<>();
+    this.configurations = configurations;
+    this.points = new ArrayList<>();
+    this.lines = new ArrayList<>();
+    this.linesB = new ArrayList<>();
 
     addMouseListener(new MouseAdapter(){
       @Override
       public void mousePressed(MouseEvent e){
-        switch(MODE){
+        switch(configurations.getMODE()){
           case 0:
             points.add(e.getPoint());
             break;
@@ -58,7 +58,7 @@ public class PaintPnl extends JPanel{
     addMouseMotionListener(new MouseAdapter(){
       @Override
       public void mouseDragged(MouseEvent e){
-        switch(MODE){
+        switch(configurations.getMODE()){
           case 0:
             points.add(e.getPoint());
             break;

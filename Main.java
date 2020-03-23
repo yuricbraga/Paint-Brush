@@ -21,7 +21,6 @@ public class Main{
     f.setVisible(true);
     f.addComponentListener(new ComponentAdapter(){
       public void componentResized(ComponentEvent e){
-        //System.out.println(e.getComponent().getWidth() + ", " + e.getComponent().getHeight());
         mainPanel.setSize(e.getComponent().getWidth(), e.getComponent().getHeight());
       }
     });
