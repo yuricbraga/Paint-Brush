@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 public class ToolsPanel extends JPanel{
   public ToolsPanel(){
     //setBorder(BorderFactory.createLineBorder(Color.BLACK));
-    setBackground(new Color(1f, 1f, 1f, 1f));
+    setBackground(new Color(1f, 1f, 1f, 0f));
 
   }
 
