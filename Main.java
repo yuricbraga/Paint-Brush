@@ -1,3 +1,6 @@
+import java.awt.BorderLayout;
+import java.awt.event.*;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
@@ -12,8 +15,15 @@ public class Main{
     System.out.println("Created GUI on EDT? " + SwingUtilities.isEventDispatchThread());
     JFrame f = new JFrame("Paint brush");
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    f.add(new MainPanel());
+    MainPanel mainPanel = new MainPanel();
+    f.add(mainPanel, BorderLayout.WEST);
     f.pack();
     f.setVisible(true);
+    f.addComponentListener(new ComponentAdapter(){
+      public void componentResized(ComponentEvent e){
+        //System.out.println(e.getComponent().getWidth() + ", " + e.getComponent().getHeight());
+        mainPanel.setSize(e.getComponent().getWidth(), e.getComponent().getHeight());
+      }
+    });
   }
 }
