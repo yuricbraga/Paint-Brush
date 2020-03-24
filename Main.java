@@ -1,6 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.event.*;
-
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 

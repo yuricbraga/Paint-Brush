@@ -120,14 +120,14 @@ public class PaintPnl extends JPanel{
     }
 
     for(Point[] i : linesB){
-      Brasenham(i[0].x, i[0].y, i[1].x, i[1].y, g);
+      Bresenham(i[0].x, i[0].y, i[1].x, i[1].y, g);
     }
 
     for(Point[] i : rectangles){
-      Brasenham(i[0].x, i[0].y, i[1].x, i[0].y, g);
-      Brasenham(i[0].x, i[0].y, i[0].x, i[1].y, g);
-      Brasenham(i[1].x, i[0].y, i[1].x, i[1].y, g);
-      Brasenham(i[0].x, i[1].y, i[1].x, i[1].y, g);
+      Bresenham(i[0].x, i[0].y, i[1].x, i[0].y, g);
+      Bresenham(i[0].x, i[0].y, i[0].x, i[1].y, g);
+      Bresenham(i[1].x, i[0].y, i[1].x, i[1].y, g);
+      Bresenham(i[0].x, i[1].y, i[1].x, i[1].y, g);
     }
   }
 
@@ -155,7 +155,7 @@ public class PaintPnl extends JPanel{
     }
   }
 
-  private void Brasenham(int x0, int y0, int x1, int y1, Graphics g){
+  private void Bresenham(int x0, int y0, int x1, int y1, Graphics g){
     int dx, dy, x, y, i, const1, const2, p, incrx, incry;
     dx = x1 - x0;
     dy = y1 - y0;
