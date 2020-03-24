@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 class ColorPalletPanel extends JPanel{
   public ColorPalletPanel(){
-    setBackground(new Color(0f,0f,0f,1f));
+    setBackground(new Color(0f,0f,0f,0f));
   }
 
   public Dimension getPreferredSize(){

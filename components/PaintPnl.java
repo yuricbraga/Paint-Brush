@@ -13,6 +13,7 @@ public class PaintPnl extends JPanel{
   ArrayList<Point> points;
   ArrayList<Point[]> lines;
   ArrayList<Point[]> linesB;
+  ArrayList<Point[]> rectangles;
 
   public PaintPnl(Configurations configurations){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -21,6 +22,7 @@ public class PaintPnl extends JPanel{
     this.points = new ArrayList<>();
     this.lines = new ArrayList<>();
     this.linesB = new ArrayList<>();
+    this.rectangles = new ArrayList<>();
 
     addMouseListener(new MouseAdapter(){
       @Override
@@ -47,6 +49,16 @@ public class PaintPnl extends JPanel{
             line2[1].x += 1;
             line2[1].y += 1;
             linesB.add(line2);
+            break;
+
+          case 3:
+            Point[] rectangle = new Point[2];
+            rectangle[0] = e.getPoint();
+            rectangle[1] = e.getPoint();
+            rectangle[1].x += 1;
+            rectangle[1].y += 1;
+            rectangles.add(rectangle);
+            break;
 
           default:
             break;
@@ -77,6 +89,13 @@ public class PaintPnl extends JPanel{
             linesB.add(line2);
             break;
 
+          case 3:
+            Point[] rectangle = rectangles.remove(rectangles.size()-1);
+            rectangle[1].x = e.getX();
+            rectangle[1].y = e.getY();
+            rectangles.add(rectangle);
+            break;
+
           default:
             break;
         }
@@ -102,6 +121,13 @@ public class PaintPnl extends JPanel{
 
     for(Point[] i : linesB){
       Brasenham(i[0].x, i[0].y, i[1].x, i[1].y, g);
+    }
+
+    for(Point[] i : rectangles){
+      Brasenham(i[0].x, i[0].y, i[1].x, i[0].y, g);
+      Brasenham(i[0].x, i[0].y, i[0].x, i[1].y, g);
+      Brasenham(i[1].x, i[0].y, i[1].x, i[1].y, g);
+      Brasenham(i[0].x, i[1].y, i[1].x, i[1].y, g);
     }
   }
 
