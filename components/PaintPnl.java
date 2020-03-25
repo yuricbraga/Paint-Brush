@@ -126,9 +126,11 @@ public class PaintPnl extends JPanel{
     return new Dimension(800, 600);
   }
 
+  @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
     g.setColor(Color.RED);
+
     for(Point i : points){
       g.fillOval(i.x, i.y, 5, 5);
     }
