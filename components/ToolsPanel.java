@@ -19,7 +19,7 @@ public class ToolsPanel extends JPanel{
   }
 
   private void createButtons(){
-    for(int i = 0; i < 4; i++){
+    for(int i = 0; i < 6; i++){
       JButton button = new JButton(i + "");
       button.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){

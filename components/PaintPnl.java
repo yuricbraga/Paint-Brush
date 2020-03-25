@@ -14,6 +14,7 @@ public class PaintPnl extends JPanel{
   ArrayList<Point[]> lines;
   ArrayList<Point[]> linesB;
   ArrayList<Point[]> rectangles;
+  ArrayList<Point[]> circles;
 
   public PaintPnl(Configurations configurations){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -23,6 +24,7 @@ public class PaintPnl extends JPanel{
     this.lines = new ArrayList<>();
     this.linesB = new ArrayList<>();
     this.rectangles = new ArrayList<>();
+    this.circles = new ArrayList<>();
 
     addMouseListener(new MouseAdapter(){
       @Override
@@ -58,6 +60,15 @@ public class PaintPnl extends JPanel{
             rectangle[1].x += 1;
             rectangle[1].y += 1;
             rectangles.add(rectangle);
+            break;
+
+          case 4:
+            Point[] circle = new Point[2];
+            circle[0] = e.getPoint();
+            circle[1] = e.getPoint();
+            circle[1].x++;
+            circle[1].y++;
+            circles.add(circle);
             break;
 
           default:
@@ -96,6 +107,13 @@ public class PaintPnl extends JPanel{
             rectangles.add(rectangle);
             break;
 
+          case 4:
+            Point[] circle = circles.remove(circles.size()-1);
+            circle[1].x = e.getX();
+            circle[1].y = e.getY();
+            circles.add(circle);
+            break;
+
           default:
             break;
         }
@@ -128,6 +146,10 @@ public class PaintPnl extends JPanel{
       Bresenham(i[0].x, i[0].y, i[0].x, i[1].y, g);
       Bresenham(i[1].x, i[0].y, i[1].x, i[1].y, g);
       Bresenham(i[0].x, i[1].y, i[1].x, i[1].y, g);
+    }
+
+    for(Point[] i : circles){
+      cirdBresenham(i[0].x, i[0].y, (int) i[0].distance(i[1]) , g);
     }
   }
 
@@ -206,6 +228,32 @@ public class PaintPnl extends JPanel{
 
         g.fillOval(x, y, 5, 5);
       }
+    }
+  }
+
+  private void plotCirclePoints(int xc, int yc, int x, int y, Graphics g){
+    g.drawOval(xc+x, yc+y, 5, 5);
+    g.drawOval(xc-x, yc+y, 5, 5);
+    g.drawOval(xc+x, yc-y, 5, 5);
+    g.drawOval(xc-x, yc-y, 5, 5);
+    g.drawOval(xc+y, yc+x, 5, 5);
+    g.drawOval(xc-y, yc+x, 5, 5);
+    g.drawOval(xc+y, yc-x, 5, 5);
+    g.drawOval(xc-y, yc-x, 5, 5);
+  }
+
+  private void cirdBresenham(int xc, int yc, int r, Graphics g){
+    int x = 0,y = r,p = 3 - 2 * r;
+    plotCirclePoints(xc, yc, x, y, g);
+    while(x < y){
+      if(p < 0){
+        p = p + 4*x + 6;
+      } else{
+        p = p + 4*(x-y) + 10;
+        y--;
+      }
+      x++;
+      plotCirclePoints(xc, yc, x, y, g);
     }
   }
   
