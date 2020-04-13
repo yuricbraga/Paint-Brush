@@ -19,8 +19,13 @@ public class ToolsPanel extends JPanel{
   }
 
   private void createButtons(){
-    for(int i = 0; i < 6; i++){
+    String hintText[] = {"Lápis", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover"};
+    int i = 0;
+
+    for(String x : hintText){
       JButton button = new JButton(i + "");
+      button.setToolTipText(x);
+
       button.addActionListener(new ActionListener(){
         public void actionPerformed(ActionEvent e){
           configurations.setMODE(Integer.parseInt(e.getActionCommand()));
@@ -28,6 +33,8 @@ public class ToolsPanel extends JPanel{
       });
 
       add(button);
+      i++;
+
     }
   }
 

@@ -9,9 +9,11 @@ import javax.swing.JPanel;
 
 public class PaintPnl extends JPanel{
   Configurations configurations;
-  boolean canvas[][];
-  boolean canvasCopy[][];
+  Color canvas[][];
+  Color canvasCopy[][];
+  Color selectedRegion[][];
   Point point0;
+  boolean canClear = false;
 
   public PaintPnl(Configurations configurations){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -21,18 +23,43 @@ public class PaintPnl extends JPanel{
     addMouseListener(new MouseAdapter(){
       @Override
       public void mousePressed(MouseEvent e){
+        clearColor(Color.BLACK);
+
         switch(configurations.getMODE()){
           case 0:
+            configurations.setColor(Color.GREEN);
             setPixel(e.getX(), e.getY());
             break;
 
-          default:
+          case 5:
+            configurations.setColor(Color.BLACK);
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
+            break;
 
+          case 6:
+            clearRegion(canvasCopy, point0.x, point0.y, point0.x + selectedRegion.length, point0.y + selectedRegion[0].length);
+            break;
+
+          default:
+            configurations.setColor(Color.BLUE);
+            canvasCopy = cloneMatrix(canvas);
+            point0 = e.getPoint();
             break;
         }
+
+
         repaint();
+      }
+
+    });
+
+    addMouseListener(new MouseAdapter(){
+      @Override
+      public void mouseReleased(MouseEvent e){
+        if(configurations.getMODE() == 5){
+          configurations.setMODE(6);
+        }
       }
     });
 
@@ -58,10 +85,7 @@ public class PaintPnl extends JPanel{
 
           case 3:
             canvas = cloneMatrix(canvasCopy);
-            Bresenham(point0.x, point0.y, e.getX(), point0.y);
-            Bresenham(point0.x, point0.y, point0.x, e.getY());
-            Bresenham(e.getX(), point0.y, e.getX(), e.getY());
-            Bresenham(point0.x, e.getY(), e.getX(), e.getY());
+            rectBresenham(point0.x, point0.y, e.getX(), e.getY());
 
             break;
 
@@ -71,27 +95,40 @@ public class PaintPnl extends JPanel{
 
             break;
 
+          case 5:
+            canvas = cloneMatrix(canvasCopy);
+            rectBresenham(point0.x, point0.y, e.getX(), e.getY());
+            selectRegion(point0.x, point0.y, e.getX(), e.getY());
+
+            break;
+
+          case 6:
+            canvas = cloneMatrix(canvasCopy);
+            moveRegion(e.getX(), e.getY());
+            break;
+
           default:
             break;
         }
         repaint();
       }
     });
+
   }
 
   public Dimension getPreferredSize(){
-    this.canvas = new boolean[800][600];
+    this.canvas = new Color[800][600];
     return new Dimension(800, 600);
   }
 
   @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
-    g.setColor(Color.RED);
 
     for(int row = 0; row < this.canvas.length; row++){
       for(int col = 0; col < this.canvas[row].length; col++){
-        if(canvas[row][col]){
+        if(canvas[row][col] != null){
+          g.setColor(canvas[row][col]);
           g.fillOval(row, col, 5, 5);
         }
       }
@@ -202,14 +239,60 @@ public class PaintPnl extends JPanel{
     }
   }
 
-  private void setPixel(int x, int y){
-    if(x >= 0 && x < 800 && y >= 0 && y < 600){
-      this.canvas[x][y] = true;
+  private void rectBresenham(int x0, int y0, int x1, int y1){
+    Bresenham(x0, y0, x1, y0);
+    Bresenham(x0, y0, x0, y1);
+    Bresenham(x1, y0, x1, y1);
+    Bresenham(x0, y1, x1, y1);
+  }
+
+  private void selectRegion(int x0, int y0, int x1, int y1){
+    int rows = x1 - x0;
+    int cols = y1 - y0;
+    selectedRegion = new Color[rows+1][cols+1];
+
+    for(int i = x0; i <= x1; i++){
+      for(int j = y0; j <= y1; j++){
+        selectedRegion[i - x0][j - y0] = canvas[i][j];
+      }
+    }
+
+  }
+
+  private void moveRegion(int x, int y){
+    for(int i = x; i < x + selectedRegion.length; i++){
+      for(int j = y; j < y + selectedRegion[0].length; j++){
+        canvas[i][j] = selectedRegion[i-x][j-y];
+      }
     }
   }
 
-  private boolean[][] cloneMatrix(boolean [][]matrix){
-    boolean copy[][] = new boolean[matrix.length][matrix[0].length];
+  private void clearRegion(Color pixelMatrix[][],int x0, int y0, int x1, int y1){
+    for(int i = x0; i < x1; i++){
+      for(int j = y0; j < y1; j++){
+        pixelMatrix[i][j] = null;
+      }
+    }
+  }
+
+  private void clearColor(Color color){
+    for(int i = 0; i < canvas.length; i++){
+      for(int j = 0; j < canvas[0].length; j++){
+        if(canvas[i][j] == color){
+          canvas[i][j] = null;
+        }
+      }
+    }
+  }
+
+  private void setPixel(int x, int y){
+    if(x >= 0 && x < 800 && y >= 0 && y < 600){
+      this.canvas[x][y] = configurations.getColor();
+    }
+  }
+
+  private Color[][] cloneMatrix(Color [][]matrix){
+    Color copy[][] = new Color[matrix.length][matrix[0].length];
 
     for(int row = 0; row < copy.length; row++){
       for(int col = 0; col < copy[0].length; col++){
