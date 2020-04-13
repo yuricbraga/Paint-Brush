@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "CodeLens (Launch) - ClippingPanel",
+      "request": "launch",
+      "mainClass": "components.ClippingPanel",
+      "projectName": "Paint-Brush_31caa161"
+    },
+    {
+      "type": "java",
       "name": "CodeLens (Launch) - Main",
       "request": "launch",
       "mainClass": "Main",

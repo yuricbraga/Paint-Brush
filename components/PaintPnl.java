@@ -3,75 +3,33 @@ package components;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class PaintPnl extends JPanel{
   Configurations configurations;
-  ArrayList<Point> points;
-  ArrayList<Point[]> lines;
-  ArrayList<Point[]> linesB;
-  ArrayList<Point[]> rectangles;
-  ArrayList<Point[]> circles;
+  boolean canvas[][];
+  boolean canvasCopy[][];
+  Point point0;
 
   public PaintPnl(Configurations configurations){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setBackground(Color.WHITE);
     this.configurations = configurations;
-    this.points = new ArrayList<>();
-    this.lines = new ArrayList<>();
-    this.linesB = new ArrayList<>();
-    this.rectangles = new ArrayList<>();
-    this.circles = new ArrayList<>();
 
     addMouseListener(new MouseAdapter(){
       @Override
       public void mousePressed(MouseEvent e){
         switch(configurations.getMODE()){
           case 0:
-            points.add(e.getPoint());
-            break;
-
-          case 1:
-            Point[] line1 = new Point[2];
-            line1[0] = e.getPoint();
-            line1[1] = e.getPoint();
-            line1[1].x += 1;
-            line1[1].y += 1;
-            lines.add(line1);
-
-            break;
-          
-          case 2:
-            Point[] line2 = new Point[2];
-            line2[0] = e.getPoint();
-            line2[1] = e.getPoint();
-            line2[1].x += 1;
-            line2[1].y += 1;
-            linesB.add(line2);
-            break;
-
-          case 3:
-            Point[] rectangle = new Point[2];
-            rectangle[0] = e.getPoint();
-            rectangle[1] = e.getPoint();
-            rectangle[1].x += 1;
-            rectangle[1].y += 1;
-            rectangles.add(rectangle);
-            break;
-
-          case 4:
-            Point[] circle = new Point[2];
-            circle[0] = e.getPoint();
-            circle[1] = e.getPoint();
-            circle[1].x++;
-            circle[1].y++;
-            circles.add(circle);
+            setPixel(e.getX(), e.getY());
             break;
 
           default:
+            canvasCopy = cloneMatrix(canvas);
+            point0 = e.getPoint();
+
             break;
         }
         repaint();
@@ -83,35 +41,34 @@ public class PaintPnl extends JPanel{
       public void mouseDragged(MouseEvent e){
         switch(configurations.getMODE()){
           case 0:
-            points.add(e.getPoint());
+            setPixel(e.getX(), e.getY());
             break;
 
           case 1:
-            Point[] line1 = lines.remove(lines.size()-1);
-            line1[1].x = e.getX();
-            line1[1].y = e.getY();
-            lines.add(line1);
+            canvas = cloneMatrix(canvasCopy);
+            DDA(point0.x, point0.y, e.getX(), e.getY());
+
             break;
 
           case 2:
-            Point[] line2 = linesB.remove(linesB.size()-1);
-            line2[1].x = e.getX();
-            line2[1].y = e.getY();
-            linesB.add(line2);
+            canvas = cloneMatrix(canvasCopy);
+            Bresenham(point0.x, point0.y, e.getX(), e.getY());
+
             break;
 
           case 3:
-            Point[] rectangle = rectangles.remove(rectangles.size()-1);
-            rectangle[1].x = e.getX();
-            rectangle[1].y = e.getY();
-            rectangles.add(rectangle);
+            canvas = cloneMatrix(canvasCopy);
+            Bresenham(point0.x, point0.y, e.getX(), point0.y);
+            Bresenham(point0.x, point0.y, point0.x, e.getY());
+            Bresenham(e.getX(), point0.y, e.getX(), e.getY());
+            Bresenham(point0.x, e.getY(), e.getX(), e.getY());
+
             break;
 
           case 4:
-            Point[] circle = circles.remove(circles.size()-1);
-            circle[1].x = e.getX();
-            circle[1].y = e.getY();
-            circles.add(circle);
+            canvas = cloneMatrix(canvasCopy);
+            cirdBresenham(point0.x, point0.y, (int) point0.distance(e.getPoint()));
+
             break;
 
           default:
@@ -123,6 +80,7 @@ public class PaintPnl extends JPanel{
   }
 
   public Dimension getPreferredSize(){
+    this.canvas = new boolean[800][600];
     return new Dimension(800, 600);
   }
 
@@ -131,31 +89,16 @@ public class PaintPnl extends JPanel{
     super.paintComponent(g);
     g.setColor(Color.RED);
 
-    for(Point i : points){
-      g.fillOval(i.x, i.y, 5, 5);
-    }
-
-    for(Point[] i : lines){
-      DDA(i[0].x, i[0].y, i[1].x, i[1].y, g);
-    }
-
-    for(Point[] i : linesB){
-      Bresenham(i[0].x, i[0].y, i[1].x, i[1].y, g);
-    }
-
-    for(Point[] i : rectangles){
-      Bresenham(i[0].x, i[0].y, i[1].x, i[0].y, g);
-      Bresenham(i[0].x, i[0].y, i[0].x, i[1].y, g);
-      Bresenham(i[1].x, i[0].y, i[1].x, i[1].y, g);
-      Bresenham(i[0].x, i[1].y, i[1].x, i[1].y, g);
-    }
-
-    for(Point[] i : circles){
-      cirdBresenham(i[0].x, i[0].y, (int) i[0].distance(i[1]) , g);
+    for(int row = 0; row < this.canvas.length; row++){
+      for(int col = 0; col < this.canvas[row].length; col++){
+        if(canvas[row][col]){
+          g.fillOval(row, col, 5, 5);
+        }
+      }
     }
   }
 
-  private void DDA(int x0, int y0, int x1, int y1, Graphics g){
+  private void DDA(int x0, int y0, int x1, int y1){
     int dx, dy, passos;
     float xIncr, yIncr, x, y;
 
@@ -171,15 +114,15 @@ public class PaintPnl extends JPanel{
     yIncr = dy / (float) passos;
     x = x0;
     y = y0;
-    g.fillOval(Math.round(x), Math.round(y), 5, 5);
+    setPixel(Math.round(x), Math.round(y));
     for(int i = 0; i < passos; i++){
       x = x + xIncr;
       y = y + yIncr;
-      g.fillOval(Math.round(x), Math.round(y), 5, 5);
+      setPixel(Math.round(x), Math.round(y));
     }
   }
 
-  private void Bresenham(int x0, int y0, int x1, int y1, Graphics g){
+  private void Bresenham(int x0, int y0, int x1, int y1){
     int dx, dy, x, y, i, const1, const2, p, incrx, incry;
     dx = x1 - x0;
     dy = y1 - y0;
@@ -199,7 +142,7 @@ public class PaintPnl extends JPanel{
 
     x = x0;
     y = y0;
-    g.fillOval(x, y, 5, 5);
+    setPixel(x, y);
 
     if(dy < dx){
       p = 2*dy - dx;
@@ -213,7 +156,7 @@ public class PaintPnl extends JPanel{
           y += incry;
           p += const2;
         }
-        g.fillOval(x, y, 5, 5);
+        setPixel(x, y);
       }
     } else{
       p = 2*dx - dy;
@@ -228,25 +171,25 @@ public class PaintPnl extends JPanel{
           p += const2;
         }
 
-        g.fillOval(x, y, 5, 5);
+        setPixel(x, y);
       }
     }
   }
 
-  private void plotCirclePoints(int xc, int yc, int x, int y, Graphics g){
-    g.drawOval(xc+x, yc+y, 5, 5);
-    g.drawOval(xc-x, yc+y, 5, 5);
-    g.drawOval(xc+x, yc-y, 5, 5);
-    g.drawOval(xc-x, yc-y, 5, 5);
-    g.drawOval(xc+y, yc+x, 5, 5);
-    g.drawOval(xc-y, yc+x, 5, 5);
-    g.drawOval(xc+y, yc-x, 5, 5);
-    g.drawOval(xc-y, yc-x, 5, 5);
+  private void plotCirclePoints(int xc, int yc, int x, int y){
+    setPixel(xc+x,yc+y);
+    setPixel(xc-x,yc+y);
+    setPixel(xc+x,yc-y);
+    setPixel(xc-x,yc-y);
+    setPixel(xc+y,yc+x);
+    setPixel(xc-y,yc+x);
+    setPixel(xc+y,yc-x);
+    setPixel(xc-y,yc-x);
   }
 
-  private void cirdBresenham(int xc, int yc, int r, Graphics g){
+  private void cirdBresenham(int xc, int yc, int r){
     int x = 0,y = r,p = 3 - 2 * r;
-    plotCirclePoints(xc, yc, x, y, g);
+    plotCirclePoints(xc, yc, x, y);
     while(x < y){
       if(p < 0){
         p = p + 4*x + 6;
@@ -255,8 +198,26 @@ public class PaintPnl extends JPanel{
         y--;
       }
       x++;
-      plotCirclePoints(xc, yc, x, y, g);
+      plotCirclePoints(xc, yc, x, y);
     }
+  }
+
+  private void setPixel(int x, int y){
+    if(x >= 0 && x < 800 && y >= 0 && y < 600){
+      this.canvas[x][y] = true;
+    }
+  }
+
+  private boolean[][] cloneMatrix(boolean [][]matrix){
+    boolean copy[][] = new boolean[matrix.length][matrix[0].length];
+
+    for(int row = 0; row < copy.length; row++){
+      for(int col = 0; col < copy[0].length; col++){
+        copy[row][col] = matrix[row][col];
+      }
+    }
+
+    return copy;
   }
   
 }
