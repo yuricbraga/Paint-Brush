@@ -13,7 +13,7 @@ public class Main{
     JFrame f = new JFrame("Paint brush");
     f.setResizable(false);
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    MainPanel mainPanel = new MainPanel();
+    MainPanel mainPanel = new MainPanel(f);
     f.add(mainPanel);
     f.pack();
     f.setVisible(true);

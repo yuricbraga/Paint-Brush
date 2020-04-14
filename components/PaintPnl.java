@@ -5,7 +5,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import helpers.Rotation;
 
 public class PaintPnl extends JPanel{
   Configurations configurations;
@@ -13,12 +17,14 @@ public class PaintPnl extends JPanel{
   Color canvasCopy[][];
   Color selectedRegion[][];
   Point point0;
-  boolean canClear = false;
+  Point point0Normalized;
+  JFrame parent;
 
-  public PaintPnl(Configurations configurations){
+  public PaintPnl(Configurations configurations, JFrame parent){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setBackground(Color.WHITE);
     this.configurations = configurations;
+    this.parent = parent;
 
     addMouseListener(new MouseAdapter(){
       @Override
@@ -37,8 +43,14 @@ public class PaintPnl extends JPanel{
             point0 = e.getPoint();
             break;
 
-          case 6:
+          case 50:
             clearRegion(canvasCopy, point0.x, point0.y, point0.x + selectedRegion.length, point0.y + selectedRegion[0].length);
+            break;
+
+          case 6:
+            configurations.setColor(Color.BLACK);
+            canvasCopy = cloneMatrix(canvas);
+            point0 = e.getPoint();
             break;
 
           default:
@@ -57,10 +69,31 @@ public class PaintPnl extends JPanel{
     addMouseListener(new MouseAdapter(){
       @Override
       public void mouseReleased(MouseEvent e){
-        if(configurations.getMODE() == 5){
-          configurations.setMODE(6);
+        switch(configurations.getMODE()){
+          case 5:
+            configurations.setMODE(50);
+            break;
+
+          case 6:
+            Double degrees = Double.parseDouble((String)JOptionPane.showInputDialog(parent, "A rotação será de quantos graus?", "", JOptionPane.PLAIN_MESSAGE, null, null, ""));
+
+            clearRegion(canvasCopy, point0Normalized.x, point0Normalized.y, point0Normalized.x + selectedRegion.length, point0Normalized.y + selectedRegion[0].length);
+            canvas = cloneMatrix(canvasCopy);
+            Rotation rotation = new Rotation(selectedRegion, point0Normalized, null);
+            Point rotatedCoordinates[][] = rotation.getRotatedCoodinates(Math.toRadians(degrees));
+            for(int i = 0; i < rotatedCoordinates.length; i++){
+              for(int j = 0; j < rotatedCoordinates[0].length; j++){
+                if(rotatedCoordinates[i][j].x >= 0 && rotatedCoordinates[i][j].y >= 0 && rotatedCoordinates[i][j].x <= 799 && rotatedCoordinates[i][j].y <= 599 ){
+                  canvas[rotatedCoordinates[i][j].x][rotatedCoordinates[i][j].y] = selectedRegion[i][j];
+                }
+              }
+            }
+            clearColor(Color.BLACK);
+            break;
+ 
         }
-      }
+        repaint();
+     }
     });
 
     addMouseMotionListener(new MouseAdapter(){
@@ -102,9 +135,17 @@ public class PaintPnl extends JPanel{
 
             break;
 
-          case 6:
+          case 50:
             canvas = cloneMatrix(canvasCopy);
             moveRegion(e.getX(), e.getY());
+            break;
+
+          case 6:
+            canvas = cloneMatrix(canvasCopy);
+            int normalized[] = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
+            rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
+            selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
+            point0Normalized = new Point(normalized[0], normalized[1]);
             break;
 
           default:
@@ -283,6 +324,28 @@ public class PaintPnl extends JPanel{
         }
       }
     }
+  }
+
+  private int[] normalizeCoordinates(int x0, int y0, int x1, int y1){
+    int response[] = {0,0,0,0};
+
+    if(x1 > x0){
+      response[0] = x0;
+      response[2] = x1;
+    } else{
+      response[0] = x1;
+      response[2] = x0;
+    }
+
+    if(y1 > y0){
+      response[1] = y0;
+      response[3] = y1;
+    } else{
+      response[1] = y1;
+      response[3] = y0;
+    }
+
+    return response;
   }
 
   private void setPixel(int x, int y){
