@@ -11,6 +11,17 @@ import javax.swing.JPanel;
 
 import helpers.Rotation;
 
+/**
+* Classe que implementa os algoritmos principais
+*
+* @author Ian
+* @author Saul Melo
+* @author Yuri
+* @since 04 de 2020 
+* @version 1.2
+* <extends> JPanel
+*/
+
 public class PaintPnl extends JPanel{
   Configurations configurations;
   Color canvas[][];
@@ -20,6 +31,15 @@ public class PaintPnl extends JPanel{
   Point point0Normalized;
   JFrame parent;
 
+  /**
+  * O Construtor da classe que realiza a captura dos eventos,
+  * A configuracao dos parametros basicos e selecionada qual
+  * Algoritmo devera ser executado.
+  *
+  * @param Configurations, Objeto do tipo Configurations
+  * contendo a configuracao de um componente JButton
+  * @param JFrame, Contendo o JFrame pai do software
+  */
   public PaintPnl(Configurations configurations, JFrame parent){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
     setBackground(Color.WHITE);
@@ -75,7 +95,7 @@ public class PaintPnl extends JPanel{
             break;
 
           case 6:
-            Double degrees = Double.parseDouble((String)JOptionPane.showInputDialog(parent, "A rotação será de quantos graus?", "", JOptionPane.PLAIN_MESSAGE, null, null, ""));
+            Double degrees = Double.parseDouble((String)JOptionPane.showInputDialog(parent, "A rotacao sera de quantos graus?", "", JOptionPane.PLAIN_MESSAGE, null, null, ""));
 
             clearRegion(canvasCopy, point0Normalized.x, point0Normalized.y, point0Normalized.x + selectedRegion.length, point0Normalized.y + selectedRegion[0].length);
             canvas = cloneMatrix(canvasCopy);
@@ -157,11 +177,20 @@ public class PaintPnl extends JPanel{
 
   }
 
+  /**
+  * Este metodo realiza o dimensionamento ...
+  */
   public Dimension getPreferredSize(){
     this.canvas = new Color[800][600];
     return new Dimension(800, 600);
   }
 
+  /**
+  * Este metodo sobrescreve o metodo paintComponent
+  * Para gerar um objeto de forma circular
+  *
+  * @param Graphics
+  */
   @Override
   public void paintComponent(Graphics g){
     super.paintComponent(g);
@@ -176,6 +205,15 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo implementa o algoritmo DDA de rasterizacao
+  * De retas
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Coordenada x do ponto final de selecao do evento
+  * @param int, Coordenada y do ponto final de selecao do evento
+  */
   private void DDA(int x0, int y0, int x1, int y1){
     int dx, dy, passos;
     float xIncr, yIncr, x, y;
@@ -200,6 +238,15 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo implementa o algoritmo Bresenham de
+  * Rasterizacao de retas 
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Coordenada x do ponto final de selecao do evento
+  * @param int, Coordenada y do ponto final de selecao do evento
+  */
   private void Bresenham(int x0, int y0, int x1, int y1){
     int dx, dy, x, y, i, const1, const2, p, incrx, incry;
     dx = x1 - x0;
@@ -254,6 +301,14 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo seta os pixels pertencentes a figura da circunferencia
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Coordenada x do ponto final de selecao do evento
+  * @param int, Coordenada y do ponto final de selecao do eventoo
+  */
   private void plotCirclePoints(int xc, int yc, int x, int y){
     setPixel(xc+x,yc+y);
     setPixel(xc-x,yc+y);
@@ -265,6 +320,14 @@ public class PaintPnl extends JPanel{
     setPixel(xc-y,yc-x);
   }
 
+  /**
+  * Este metodo implementa o algoritmo de Brasenhan para
+  * Plot de circunferencias
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Raio da circunferencia
+  */
   private void cirdBresenham(int xc, int yc, int r){
     int x = 0,y = r,p = 3 - 2 * r;
     plotCirclePoints(xc, yc, x, y);
@@ -280,6 +343,15 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo implementa uma modificacao
+  * Do algoritmo de Bresenham para o plot de retangulos
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Coordenada x do ponto final de selecao do evento
+  * @param int, Coordenada y do ponto final de selecao do evento
+  */
   private void rectBresenham(int x0, int y0, int x1, int y1){
     Bresenham(x0, y0, x1, y0);
     Bresenham(x0, y0, x0, y1);
@@ -287,6 +359,16 @@ public class PaintPnl extends JPanel{
     Bresenham(x0, y1, x1, y1);
   }
 
+  /**
+  * Este metodo implementa a selecao de uma regiao retangular do canvas
+  * Utilizando uma matriz do tipo Color, delimitada por um ponto de origem,
+  * E um de destino.
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Coordenada x do ponto final de selecao do evento
+  * @param int, Coordenada y do ponto final de selecao do evento
+  */
   private void selectRegion(int x0, int y0, int x1, int y1){
     int rows = x1 - x0;
     int cols = y1 - y0;
@@ -300,6 +382,14 @@ public class PaintPnl extends JPanel{
 
   }
 
+  /**
+  * Este metodo implementa a movimentacao de uma regicao retangular selecionada
+  * No canvas. Utilizando uma matriz do tipo Color, delimitada por um ponto de origem,
+  * E um de destino.
+  *
+  * @param int, Coordenada x do novo ponto de inicio da regiao selecionada
+  * @param int, Coordenada y do novo ponto de inicio da regiao selecionada 
+  */
   private void moveRegion(int x, int y){
     for(int i = x; i < x + selectedRegion.length; i++){
       for(int j = y; j < y + selectedRegion[0].length; j++){
@@ -308,6 +398,15 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo implementa a limpeza de uma regiao, pre selecionada do canvas.
+  *
+  * @param [][] Color, Matriz de Cores representando o Canvas da aplicacao
+  * @param int, Coordenada x da origem da regiao
+  * @param int, Coordenada y da origem da regiao
+  * @param int, Coordenada x da origem da regiao + tamanho da regiao selecionada
+  * @param int, Coordenada y da origem da regiao + tamanho da regiao selecionada
+  */
   private void clearRegion(Color pixelMatrix[][],int x0, int y0, int x1, int y1){
     for(int i = x0; i < x1; i++){
       for(int j = y0; j < y1; j++){
@@ -316,6 +415,11 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo, implementa a limpeza de um pixel do canvas
+  *
+  * @param Color, Contendo a cor atual do pixel
+  */
   private void clearColor(Color color){
     for(int i = 0; i < canvas.length; i++){
       for(int j = 0; j < canvas[0].length; j++){
@@ -326,6 +430,14 @@ public class PaintPnl extends JPanel{
     }
   }
 
+  /**
+  * Este metodo efetua a normalizacao das coordenadas do ponto
+  *
+  * @param int, Coordenada x do ponto de origem
+  * @param int, Coordenada y do ponto de origem
+  * @param int, Coordenada x do ponto final de selecao do evento
+  * @param int, Coordenada y do ponto final de selecao do evento
+  */
   private int[] normalizeCoordinates(int x0, int y0, int x1, int y1){
     int response[] = {0,0,0,0};
 
@@ -348,12 +460,24 @@ public class PaintPnl extends JPanel{
     return response;
   }
 
+  /**
+  * Este metodo, seta um pixel do Canvas como utilizado ou nao
+  *
+  * @param int, coordenada x do pixel
+  * @param int, coordenada y do pixel
+  */
   private void setPixel(int x, int y){
     if(x >= 0 && x < 800 && y >= 0 && y < 600){
       this.canvas[x][y] = configurations.getColor();
     }
   }
 
+  /**
+  * Este metodo realiza uma clonagem do estado atual do Canvas
+  *
+  * @param [][] Color, Contendo o estado atual do canvas
+  * @return [][]Color, Uma copia do estado atual do canvas
+  */
   private Color[][] cloneMatrix(Color [][]matrix){
     Color copy[][] = new Color[matrix.length][matrix[0].length];
 
