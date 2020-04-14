@@ -19,7 +19,7 @@ public class ToolsPanel extends JPanel{
   }
 
   private void createButtons(){
-    String hintText[] = {"Lápis", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover", "Selecionar e rotacionar", "Selecionar e redimensionar"};
+    String hintText[] = {"Lápis", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover", "Selecionar e rotacionar", "Selecionar e refletir"};
     int i = 0;
 
     for(String x : hintText){

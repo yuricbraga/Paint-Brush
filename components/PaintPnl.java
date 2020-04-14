@@ -10,15 +10,16 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import helpers.Rotation;
+import helpers.Reflexion;
 
 public class PaintPnl extends JPanel{
-  Configurations configurations;
-  Color canvas[][];
-  Color canvasCopy[][];
-  Color selectedRegion[][];
-  Point point0;
-  Point point0Normalized;
-  JFrame parent;
+  private Configurations configurations;
+  private Color canvas[][];
+  private Color canvasCopy[][];
+  private Color selectedRegion[][];
+  private Point point0;
+  private int normalized[];
+  private JFrame parent;
 
   public PaintPnl(Configurations configurations, JFrame parent){
     setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -44,13 +45,19 @@ public class PaintPnl extends JPanel{
             break;
 
           case 50:
-            clearRegion(canvasCopy, point0.x, point0.y, point0.x + selectedRegion.length, point0.y + selectedRegion[0].length);
+            clearRegion(canvasCopy, normalized[0], normalized[1], normalized[0] + selectedRegion.length, normalized[1] + selectedRegion[0].length);
             break;
 
           case 6:
             configurations.setColor(Color.BLACK);
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
+            break;
+
+          case 7:
+            point0 = e.getPoint();
+            configurations.setColor(Color.BLACK);
+            canvasCopy = cloneMatrix(canvas);
             break;
 
           default:
@@ -77,9 +84,9 @@ public class PaintPnl extends JPanel{
           case 6:
             Double degrees = Double.parseDouble((String)JOptionPane.showInputDialog(parent, "A rotação será de quantos graus?", "", JOptionPane.PLAIN_MESSAGE, null, null, ""));
 
-            clearRegion(canvasCopy, point0Normalized.x, point0Normalized.y, point0Normalized.x + selectedRegion.length, point0Normalized.y + selectedRegion[0].length);
+            clearRegion(canvasCopy, normalized[0], normalized[1], normalized[0] + selectedRegion.length, normalized[1] + selectedRegion[0].length);
             canvas = cloneMatrix(canvasCopy);
-            Rotation rotation = new Rotation(selectedRegion, point0Normalized, null);
+            Rotation rotation = new Rotation(selectedRegion, new Point(normalized[0], normalized[1]), null);
             Point rotatedCoordinates[][] = rotation.getRotatedCoodinates(Math.toRadians(degrees));
             for(int i = 0; i < rotatedCoordinates.length; i++){
               for(int j = 0; j < rotatedCoordinates[0].length; j++){
@@ -91,6 +98,27 @@ public class PaintPnl extends JPanel{
             clearColor(Color.BLACK);
             break;
  
+          case 7:
+            String response = (String)JOptionPane.showInputDialog(parent, "Como será a reflexão?", "", JOptionPane.PLAIN_MESSAGE, null, new String[]{"x e y", "apenas x", "apenas y"}, "");
+
+            Reflexion reflexion = new Reflexion(cloneMatrix(selectedRegion), new Point(normalized[0],normalized[1]));
+
+            switch(response){
+              case "x e y":
+                selectedRegion = reflexion.getReflection(true, true);
+                break;
+              case "apenas x":
+                selectedRegion = reflexion.getReflection(true, false);
+                break;
+              case "apenas y":
+                selectedRegion = reflexion.getReflection(false, true);
+                break;
+            }
+
+            moveRegion(normalized[0], normalized[1]);
+            clearColor(Color.BLACK);
+            configurations.setMODE(0);
+            break;
         }
         repaint();
      }
@@ -130,8 +158,9 @@ public class PaintPnl extends JPanel{
 
           case 5:
             canvas = cloneMatrix(canvasCopy);
-            rectBresenham(point0.x, point0.y, e.getX(), e.getY());
-            selectRegion(point0.x, point0.y, e.getX(), e.getY());
+            normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
+            rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
+            selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
 
             break;
 
@@ -142,10 +171,16 @@ public class PaintPnl extends JPanel{
 
           case 6:
             canvas = cloneMatrix(canvasCopy);
-            int normalized[] = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
+            normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
             rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
             selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
-            point0Normalized = new Point(normalized[0], normalized[1]);
+            break;
+
+          case 7:
+            canvas = cloneMatrix(canvasCopy);
+            normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
+            rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
+            selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
             break;
 
           default:
@@ -170,7 +205,7 @@ public class PaintPnl extends JPanel{
       for(int col = 0; col < this.canvas[row].length; col++){
         if(canvas[row][col] != null){
           g.setColor(canvas[row][col]);
-          g.fillOval(row, col, 5, 5);
+          g.fillOval(row, col, 2, 2);
         }
       }
     }
@@ -303,7 +338,9 @@ public class PaintPnl extends JPanel{
   private void moveRegion(int x, int y){
     for(int i = x; i < x + selectedRegion.length; i++){
       for(int j = y; j < y + selectedRegion[0].length; j++){
-        canvas[i][j] = selectedRegion[i-x][j-y];
+        if(i >= 0 && j >= 0 && i <= 799 && j <= 599){
+          canvas[i][j] = selectedRegion[i-x][j-y];
+        }
       }
     }
   }
