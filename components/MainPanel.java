@@ -6,12 +6,28 @@ import java.awt.event.*;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+* Esta classe e a responsavel pela gerencia dos componentes
+* Do painel principal do software 
+* 
+* @author Ian
+* @author Saul Melo
+* @author Yuri
+* @since 04 de 2020 
+* @version 1.2
+* <extends> JPanel
+*/
 public class MainPanel extends JPanel{
   Configurations configurations;
   ToolsPanel toolsPanel;
   PaintPnl paintPnl;
   ColorPalletPanel colorPalletPanel;
 
+   /**
+   * Este metodo e o responsavel por gerenciar os componentes do painel principal
+   *
+   * @param JFrame, JFrame pai do programa
+   */ 
   public MainPanel(JFrame parent){
     setBackground(Color.LIGHT_GRAY);
     configurations = new Configurations(0, Color.RED);
@@ -24,6 +40,9 @@ public class MainPanel extends JPanel{
     add(colorPalletPanel, BorderLayout.SOUTH);
   }
 
+  /**
+  * Metodo responsavel pelo dimensionamento ...
+  */
   public Dimension getPreferredSize(){
     return new Dimension(920, 720);
   }
