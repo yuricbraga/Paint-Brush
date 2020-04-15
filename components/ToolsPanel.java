@@ -40,7 +40,7 @@ public class ToolsPanel extends JPanel{
   * E o coloca em estado de espera, de um evento.
   */
   private void createButtons(){
-    String hintText[] = {"Lápis", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover", "Selecionar e rotacionar", "Selecionar e refletir"};
+    String hintText[] = {"Lápis", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover", "Selecionar e rotacionar", "Selecionar e refletir", "Selecionar e redimensionar"};
     int i = 0;
 
     for(String x : hintText){

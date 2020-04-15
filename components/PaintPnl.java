@@ -9,8 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import helpers.Rotation;
-import helpers.Reflexion;
+import helpers.*;
 
 /**
 * Classe que implementa os algoritmos principais
@@ -58,23 +57,14 @@ public class PaintPnl extends JPanel{
             setPixel(e.getX(), e.getY());
             break;
 
-          case 5:
-            configurations.setColor(Color.BLACK);
-            canvasCopy = cloneMatrix(canvas);
-            point0 = e.getPoint();
-            break;
-
           case 50:
             clearRegion(canvasCopy, normalized[0], normalized[1], normalized[0] + selectedRegion.length, normalized[1] + selectedRegion[0].length);
             break;
 
+          case 5:
           case 6:
-            configurations.setColor(Color.BLACK);
-            canvasCopy = cloneMatrix(canvas);
-            point0 = e.getPoint();
-            break;
-
           case 7:
+          case 8:
             point0 = e.getPoint();
             configurations.setColor(Color.BLACK);
             canvasCopy = cloneMatrix(canvas);
@@ -137,7 +127,21 @@ public class PaintPnl extends JPanel{
 
             moveRegion(normalized[0], normalized[1]);
             clearColor(Color.BLACK);
-            configurations.setMODE(0);
+            break;
+
+          case 8:
+            clearRegion(canvasCopy, normalized[0], normalized[1], normalized[0] + selectedRegion.length, normalized[1] + selectedRegion[0].length);
+            canvas = cloneMatrix(canvasCopy);
+            Resize resize = new Resize(selectedRegion.length, selectedRegion[0].length, point0);
+            Point[][] resizedCoordinates = resize.getResizedCoordinates(0.5f, 0.75f);
+            for(int i = 0; i < resizedCoordinates.length; i++){
+              for(int j = 0; j < resizedCoordinates[0].length; j++){
+                if(resizedCoordinates[i][j].x >= 0 && resizedCoordinates[i][j].y >= 0 && resizedCoordinates[i][j].x <= 799 && resizedCoordinates[i][j].y <= 599 ){
+                  canvas[resizedCoordinates[i][j].x][resizedCoordinates[i][j].y] = selectedRegion[i][j];
+                }
+              }
+            }
+            clearColor(Color.BLACK);
             break;
         }
         repaint();
@@ -176,27 +180,15 @@ public class PaintPnl extends JPanel{
 
             break;
 
-          case 5:
-            canvas = cloneMatrix(canvasCopy);
-            normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
-            rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
-            selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
-
-            break;
-
           case 50:
             canvas = cloneMatrix(canvasCopy);
             moveRegion(e.getX(), e.getY());
             break;
 
+          case 5:
           case 6:
-            canvas = cloneMatrix(canvasCopy);
-            normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
-            rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
-            selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
-            break;
-
           case 7:
+          case 8:
             canvas = cloneMatrix(canvasCopy);
             normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
             rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
