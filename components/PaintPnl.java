@@ -133,7 +133,9 @@ public class PaintPnl extends JPanel{
             clearRegion(canvasCopy, normalized[0], normalized[1], normalized[0] + selectedRegion.length, normalized[1] + selectedRegion[0].length);
             canvas = cloneMatrix(canvasCopy);
             Resize resize = new Resize(selectedRegion.length, selectedRegion[0].length, point0);
-            Point[][] resizedCoordinates = resize.getResizedCoordinates(0.5f, 0.75f);
+            String xProportion = (String)JOptionPane.showInputDialog(parent, "Redimensionar x em quantos %?", "", JOptionPane.PLAIN_MESSAGE, null, null, "100");
+            String yProportion = (String)JOptionPane.showInputDialog(parent, "Redimensionar y em quantos %?", "", JOptionPane.PLAIN_MESSAGE, null, null, "100");
+            Point[][] resizedCoordinates = resize.getResizedCoordinates(Float.parseFloat(xProportion)/100.0f, Float.parseFloat(xProportion)/100.0f);
             for(int i = 0; i < resizedCoordinates.length; i++){
               for(int j = 0; j < resizedCoordinates[0].length; j++){
                 if(resizedCoordinates[i][j].x >= 0 && resizedCoordinates[i][j].y >= 0 && resizedCoordinates[i][j].x <= 799 && resizedCoordinates[i][j].y <= 599 ){
