@@ -6,11 +6,11 @@ public class LiangBarsky implements LineClipper {
   private int yMin;
   private int yMax;
 
-  public LiangBarsky(int xMin, int xMax, int yMin, int yMax){
+  public LiangBarsky(int xMin, int yMin, int xMax, int yMax) {
     this.xMin = xMin;
     this.xMax = xMax;
-    this.yMin = xMin;
-    this.yMax = xMax;
+    this.yMin = yMin;
+    this.yMax = yMax;
   }
 
   public LineSegment clip(LineSegment line) {

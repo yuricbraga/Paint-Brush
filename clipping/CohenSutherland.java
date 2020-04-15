@@ -13,11 +13,11 @@ public class CohenSutherland implements LineClipper {
   private int yMin;
   private int yMax;
 
-  public CohenSutherland(int xMin, int xMax, int yMin, int yMax) {
+  public CohenSutherland(int xMin, int yMin, int xMax, int yMax) {
     this.xMin = xMin;
     this.xMax = xMax;
-    this.yMin = xMin;
-    this.yMax = xMax;
+    this.yMin = yMin;
+    this.yMax = yMax;
   }
 
   private int OutCode(double x, double y) {

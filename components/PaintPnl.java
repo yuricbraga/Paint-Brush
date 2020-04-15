@@ -24,6 +24,9 @@ import clipping.*;
  */
 
 public class PaintPnl extends JPanel {
+  private final Color CUSTOMGREEN = new Color(0, 254, 0);
+  private final Color CUSTOMBLACK = new Color(0, 0, 1);
+
   private Configurations configurations;
   private Color canvas[][];
   private Color canvasCopy[][];
@@ -34,6 +37,7 @@ public class PaintPnl extends JPanel {
 
   private ArrayList<LineSegment> lines;
   private LineClipper clipper;
+  private LineSegment clippedLine;
 
   /**
    * O Construtor da classe que realiza a captura dos eventos, A configuracao dos
@@ -53,7 +57,8 @@ public class PaintPnl extends JPanel {
     addMouseListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
-        clearColor(Color.BLACK);
+        clearColor(CUSTOMBLACK);
+        clearColor(CUSTOMGREEN);
 
         switch (configurations.getMODE()) {
           case 0:
@@ -78,13 +83,14 @@ public class PaintPnl extends JPanel {
           case 7:
           case 8:
           case 9:
+          case 10:
             point0 = e.getPoint();
-            configurations.setColor(Color.BLACK);
+            configurations.setColor(CUSTOMBLACK);
             canvasCopy = cloneMatrix(canvas);
             break;
 
           default:
-            configurations.setColor(Color.BLUE);
+            configurations.setColor(CUSTOMBLACK);
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
             break;
@@ -125,7 +131,7 @@ public class PaintPnl extends JPanel {
                 }
               }
             }
-            clearColor(Color.BLACK);
+            clearColor(CUSTOMBLACK);
             break;
 
           case 7:
@@ -147,7 +153,7 @@ public class PaintPnl extends JPanel {
             }
 
             moveRegion(normalized[0], normalized[1]);
-            clearColor(Color.BLACK);
+            clearColor(CUSTOMBLACK);
             break;
 
           case 8:
@@ -169,17 +175,28 @@ public class PaintPnl extends JPanel {
                 }
               }
             }
-            clearColor(Color.BLACK);
+            clearColor(CUSTOMBLACK);
             break;
 
           case 9:
             clipper = new CohenSutherland(normalized[0], normalized[1], normalized[2], normalized[3]);
-            LineSegment clippedLine;
             for (LineSegment x : lines) {
               clippedLine = clipper.clip(x);
 
               if (clippedLine != null) {
                 configurations.setColor(Color.GREEN);
+                Bresenham(clippedLine.x0, clippedLine.y0, clippedLine.x1, clippedLine.y1);
+              }
+            }
+            break;
+
+          case 10:
+            clipper = new LiangBarsky(normalized[0], normalized[1], normalized[2], normalized[3]);
+            for (LineSegment x : lines) {
+              clippedLine = clipper.clip(x);
+
+              if (clippedLine != null) {
+                configurations.setColor(CUSTOMGREEN);
                 Bresenham(clippedLine.x0, clippedLine.y0, clippedLine.x1, clippedLine.y1);
               }
             }
@@ -231,6 +248,7 @@ public class PaintPnl extends JPanel {
           case 7:
           case 8:
           case 9:
+          case 10:
             canvas = cloneMatrix(canvasCopy);
             normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
             rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
