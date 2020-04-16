@@ -51,12 +51,6 @@ public class ToolsPanel extends JPanel {
       button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           configurations.setMODE(Integer.parseInt(e.getActionCommand()));
-
-          if (Integer.parseInt(e.getActionCommand()) == 11) {
-            configurations.setPixelSize(10);
-          } else {
-            configurations.setPixelSize(2);
-          }
         }
       });
 

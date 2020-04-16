@@ -65,6 +65,11 @@ public class PaintPnl extends JPanel {
         switch (configurations.getMODE()) {
           case 11:
             configurations.setColor(null);
+            for (int i = -5; i < 5; i++) {
+              for (int j = -5; j < 5; j++) {
+                setPixel(e.getX() + i, e.getY() + j);
+              }
+            }
           case 0:
             setPixel(e.getX(), e.getY());
             break;
@@ -202,6 +207,10 @@ public class PaintPnl extends JPanel {
               }
             }
             break;
+
+          case 11:
+            configurations.setPixelSize(2);
+            break;
         }
         repaint();
       }
@@ -212,6 +221,11 @@ public class PaintPnl extends JPanel {
       public void mouseDragged(MouseEvent e) {
         switch (configurations.getMODE()) {
           case 11:
+            for (int i = -5; i < 5; i++) {
+              for (int j = -5; j < 5; j++) {
+                setPixel(e.getX() + i, e.getY() + j);
+              }
+            }
           case 0:
             setPixel(e.getX(), e.getY());
             break;
