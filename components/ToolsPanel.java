@@ -37,18 +37,26 @@ public class ToolsPanel extends JPanel {
    * espera, de um evento.
    */
   private void createButtons() {
-    String hintText[] = { "Lápis", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover",
+    String hintText[] = { "Pincel", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover",
         "Selecionar e rotacionar", "Selecionar e refletir", "Selecionar e redimensionar",
-        "Recorte de retas (Cohen-Sutherland)", "Recorte de retas (Liang-Barsky)" };
+        "Recorte de retas (Cohen-Sutherland)", "Recorte de retas (Liang-Barsky)", "Borracha" };
     int i = 0;
 
     for (String x : hintText) {
-      JButton button = new JButton(i + "");
+      JButton button = new JButton(x.substring(0, 1));
       button.setToolTipText(x);
+      button.setPreferredSize(new Dimension(45, 45));
+      button.setActionCommand(Integer.toString(i));
 
       button.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
           configurations.setMODE(Integer.parseInt(e.getActionCommand()));
+
+          if (Integer.parseInt(e.getActionCommand()) == 11) {
+            configurations.setPixelSize(10);
+          } else {
+            configurations.setPixelSize(2);
+          }
         }
       });
 

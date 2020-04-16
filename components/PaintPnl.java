@@ -54,6 +54,8 @@ public class PaintPnl extends JPanel {
     this.parent = parent;
     this.lines = new ArrayList<>();
 
+    configurations.setColor(Color.BLACK);
+
     addMouseListener(new MouseAdapter() {
       @Override
       public void mousePressed(MouseEvent e) {
@@ -61,14 +63,14 @@ public class PaintPnl extends JPanel {
         clearColor(CUSTOMGREEN);
 
         switch (configurations.getMODE()) {
+          case 11:
+            configurations.setColor(null);
           case 0:
-            configurations.setColor(Color.GREEN);
             setPixel(e.getX(), e.getY());
             break;
 
           case 1:
           case 2:
-            configurations.setColor(Color.RED);
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
             break;
@@ -90,7 +92,6 @@ public class PaintPnl extends JPanel {
             break;
 
           default:
-            configurations.setColor(CUSTOMBLACK);
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
             break;
@@ -210,6 +211,7 @@ public class PaintPnl extends JPanel {
       @Override
       public void mouseDragged(MouseEvent e) {
         switch (configurations.getMODE()) {
+          case 11:
           case 0:
             setPixel(e.getX(), e.getY());
             break;
@@ -286,7 +288,7 @@ public class PaintPnl extends JPanel {
       for (int col = 0; col < this.canvas[row].length; col++) {
         if (canvas[row][col] != null) {
           g.setColor(canvas[row][col]);
-          g.fillOval(row, col, 2, 2);
+          g.fillOval(row, col, this.configurations.getPixelSize(), this.configurations.getPixelSize());
         }
       }
     }
