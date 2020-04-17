@@ -19,7 +19,9 @@ class ColorPalletPanel extends JPanel {
   private Configurations configurations;
 
   /**
-   * Construtor padrao nao parametrizado da classe
+   * Construtor parametrizado da classe
+   * 
+   * @param Configurations, Configuracoes basicas do pixel
    */
   public ColorPalletPanel(Configurations configurations) {
     this.configurations = configurations;
@@ -29,6 +31,9 @@ class ColorPalletPanel extends JPanel {
 
   }
 
+  /**
+   * Este metodo efetua a criacao da caixa da palheta de cores
+   */
   private void createButtons() {
     Color[] colors = { Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY, Color.GRAY, Color.GREEN, Color.LIGHT_GRAY,
         Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.YELLOW, Color.WHITE, Color.WHITE, Color.WHITE,

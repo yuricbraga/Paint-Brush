@@ -24,6 +24,7 @@ public class Configurations {
     *
     * @param int,   Indicando o codigo do evento a ser configurado para este objeto
     * @param Color, Indica a cor a ser exibida no cursor
+    * @param int, Tamanho do pixel
     */
    public Configurations(int MODE, Color color, int pixelSize) {
       this.MODE = MODE;
@@ -33,7 +34,7 @@ public class Configurations {
    }
 
    /**
-    * Este mï¿½todo retorna a configuracao de cor utilizada pelo objeto
+    * Este método retorna a configuracao de cor utilizada pelo objeto
     * 
     * @return java.awt.Color
     */
@@ -42,7 +43,7 @@ public class Configurations {
    }
 
    /**
-    * Este mï¿½todo retorna o indice do vento a ser realizado pelo objeto
+    * Este método retorna o indice do vento a ser realizado pelo objeto
     * 
     * @return int , Indice do evento a ser realizado
     */
@@ -51,7 +52,15 @@ public class Configurations {
    }
 
    /**
-    * Este mï¿½todo seta a configuracao de cor utilizada pelo objeto
+    * Este método retorna o tamanho do pixel corrente
+    * @return the pixelSize
+    */
+   public int getPixelSize() {
+      return pixelSize;
+   }
+
+   /**
+    * Este método seta a configuracao de cor utilizada pelo objeto
     * 
     * @param java.awt.Color
     */
@@ -61,7 +70,7 @@ public class Configurations {
    }
 
    /**
-    * Este mï¿½todo seta o indice do vento a ser realizado pelo objeto
+    * Este método seta o indice do vento a ser realizado pelo objeto
     * 
     * @param int , Indice do evento a ser realizado
     */
@@ -70,13 +79,8 @@ public class Configurations {
    }
 
    /**
-    * @return the pixelSize
-    */
-   public int getPixelSize() {
-      return pixelSize;
-   }
-
-   /**
+    * Este método seta o tamanho do pixel
+    *
     * @param pixelSize the pixelSize to set
     */
    public void setPixelSize(int pixelSize) {

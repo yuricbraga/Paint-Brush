@@ -13,7 +13,8 @@ import javax.swing.JPanel;
  * @author Ian
  * @author Saul Melo
  * @author Yuri
- * @since 04 de 2020 <extends> JPanel version 1.2
+ * @since 04 de 2020 <extends> JPanel
+ * @version 1.2
  */
 public class ToolsPanel extends JPanel {
   Configurations configurations;

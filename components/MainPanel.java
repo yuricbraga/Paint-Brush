@@ -14,7 +14,8 @@ import javax.swing.JPanel;
  * @author Saul Melo
  * @author Yuri
  * @since 04 de 2020
- * @version 1.2 <extends> JPanel
+ * @version 1.2 
+ * <extends> JPanel
  */
 public class MainPanel extends JPanel {
   Configurations configurations;
