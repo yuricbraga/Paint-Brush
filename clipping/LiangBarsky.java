@@ -1,11 +1,29 @@
 package clipping;
 
+/**
+* Classe responsavel pelo algoritmo de recorte de regiões, Liang-Barsky
+*
+* @author Ian
+* @author Saul Melo
+* @author Yuri
+* @since 04 de 2020 
+* @version 1
+*/
+
 public class LiangBarsky implements LineClipper {
   private int xMin;
   private int xMax;
   private int yMin;
   private int yMax;
 
+  /**
+  * Construtor parametrizado da classe
+  *
+  * @param int, O menor valor da coordenada x pertencente a regiao
+  * @param int, O menor valor da coordenada y pertencente a regiao
+  * @param int, O maior valor da coordenada x pertencente a regiao
+  * @param int, O maior valor da coordenada y pertencente a regiao
+  */
   public LiangBarsky(int xMin, int yMin, int xMax, int yMax) {
     this.xMin = xMin;
     this.xMax = xMax;
@@ -13,6 +31,11 @@ public class LiangBarsky implements LineClipper {
     this.yMax = yMax;
   }
 
+  /**
+  * Algoritmo Liang-Barsky para o recorte de regioes
+  *
+  * @param LineSegment, Objeto do tipo LineSegment contendo as dimensoes da janela
+  */
   public LineSegment clip(LineSegment line) {
     System.out.println("\nExecuting Liang-Barsky...");
     double u1 = 0, u2 = 1;

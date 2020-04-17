@@ -1,5 +1,15 @@
 package clipping;
 
+/**
+* Classe responsavel pelo algoritmo de recorte de regiões, CohenSutherland
+*
+* @author Ian
+* @author Saul Melo
+* @author Yuri
+* @since 04 de 2020 
+* @version 1
+*/
+
 public class CohenSutherland implements LineClipper {
 
   public static final int INSIDE = 0;
@@ -13,6 +23,14 @@ public class CohenSutherland implements LineClipper {
   private int yMin;
   private int yMax;
 
+  /**
+  * Construtor parametrizado da classe
+  *
+  * @param int, O menor valor da coordenada x pertencente a regiao
+  * @param int, O menor valor da coordenada y pertencente a regiao
+  * @param int, O maior valor da coordenada x pertencente a regiao
+  * @param int, O maior valor da coordenada y pertencente a regiao
+  */
   public CohenSutherland(int xMin, int yMin, int xMax, int yMax) {
     this.xMin = xMin;
     this.xMax = xMax;
@@ -20,6 +38,13 @@ public class CohenSutherland implements LineClipper {
     this.yMax = yMax;
   }
 
+
+  /**
+  * Este metodo determina a codificacao da regiao utilizada pelo algoritmo
+  * De Cohen-Sutherland para o recorte de regioes
+  *
+  * @param LineSegment, Objeto do tipo LineSegment contendo as dimensoes da janela
+  */
   private int OutCode(double x, double y) {
     int code = INSIDE;
 
@@ -36,6 +61,11 @@ public class CohenSutherland implements LineClipper {
     return code;
   }
 
+  /**
+  * Algoritmo de Cohen-Sutherland para o recorte de regioes
+  *
+  * @param LineSegment, Objeto do tipo LineSegment contendo as dimensoes da janela
+  */
   public LineSegment clip(LineSegment line) {
     System.out.println("\nExecuting Cohen-Sutherland...");
     int x0 = line.x0, x1 = line.x1, y0 = line.y0, y1 = line.y1;
