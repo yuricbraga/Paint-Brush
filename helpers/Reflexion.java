@@ -29,7 +29,7 @@ public class Reflexion {
   }
 
   /**
-   * Metodo  que realiza  a recuperção de uma reflexao.
+   * Metodo  que realiza  a recuperacao de uma reflexao atraves de duas variveis booleanas.
    *
    * @param boolean x
    * @param boolean y
