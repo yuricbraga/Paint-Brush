@@ -19,7 +19,7 @@ public class Reflexion {
   /**
    * O Construtor da classe que realiza a reflexão de um objeto atravez de uma representacao (matriz) e o ponto inicial.
    *
-   * @param matrix[][], matriz que representa o objeto
+   * @param Color matrix[][], matriz que representa o objeto
    * @param Point start, ponto inicial
    */
 
