@@ -32,10 +32,10 @@ public class Resize {
   }
 
   /**
-   * Metodo  que realiza  a recuperacao de uma operacao resize.
+   * Metodo  que realiza  a recuperacao de uma operacao resize atravez da utilizacao de duas contantes.
    *
-   * @param float constX, uma constante
-   * @param float constY, uma constante
+   * @param float constX
+   * @param float constY
    */
   
   public Point[][] getResizedCoordinates(float constX, float constY){
