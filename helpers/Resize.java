@@ -20,8 +20,8 @@ public class Resize {
   /**
    * O Construtor da classe que realiza o resize de um objeto atravez de uma representacao (linhas e colunas) e o ponto inicial.
    *
-   * @param int rows,
-   * @param int cols,
+   * @param int rows, representacao das linhas
+   * @param int cols, representacao de colunas
    * @param Point start, ponto inicial
    */
   
@@ -34,8 +34,8 @@ public class Resize {
   /**
    * Metodo  que realiza  a recuperacao de uma operacao resize.
    *
-   * @param float constX
-   * @param float constY
+   * @param float constX, uma constante
+   * @param float constY, uma constante
    */
   
   public Point[][] getResizedCoordinates(float constX, float constY){
