@@ -2,6 +2,16 @@ package helpers;
 
 import java.awt.*;
 
+/**
+ * Classe que implementa o algoritmo de reflexão
+ *
+ * @author Ian
+ * @author Saul Melo
+ * @author Yuri
+ * @since 04 de 2020
+ * @version 1.2 <extends> JPanel
+ */
+
 public class Reflexion {
   private Color matrix[][];
   private Point start;
