@@ -32,7 +32,7 @@ public class Resize {
   }
 
   /**
-   * Metodo  que realiza  a recuperção de uma operção resize.
+   * Metodo  que realiza  a recuperção de uma operacao resize.
    *
    * @param float constX
    * @param float constY
