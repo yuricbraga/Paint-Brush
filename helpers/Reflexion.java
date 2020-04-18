@@ -15,12 +15,26 @@ import java.awt.*;
 public class Reflexion {
   private Color matrix[][];
   private Point start;
+  
+  /**
+   * O Construtor da classe que realiza a reflexão de um objeto atravez de uma representacao (matriz) e o ponto inicial.
+   *
+   * @param matrix[][], matriz que representa o objeto
+   * @param Point start, ponto inicial
+   */
 
   public Reflexion(Color matrix[][], Point start){
     this.matrix = matrix;
     this.start = start;
   }
 
+  /**
+   * Metodo  que realiza  a recuperção de uma reflexao.
+   *
+   * @param boolean x
+   * @param boolean y
+   */
+  
   public Color[][] getReflection(boolean x, boolean y){
     if(x && y){
       for(int i = 0; i < matrix.length/2; i++){
@@ -44,7 +58,16 @@ public class Reflexion {
 
     return matrix;
   }
-
+  
+/**
+   * metodo implementa a troca de um ponto (x0,yo) por um ponto (x1,y1)
+   *
+   * @param int x0, Coordenada x do ponto (x0,y0)
+   * @param int y0, Coordenada y do ponto (x0,y0)
+   * @param int x1, Coordenada x do ponto (x1,y1)
+   * @param int y1, Coordenada y do ponto (x1,y1)
+   */
+  
   private void swap(int x0, int y0, int x1, int y1){
     Color aux = matrix[x0][y0];
     matrix[x0][y0] = matrix[x1][y1];
