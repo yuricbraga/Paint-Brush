@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import helpers.*;
 import clipping.*;
-import curves.hermite.Curve;
+import curves.hermite.Hermite;
 
 /**
  * Classe que implementa os algoritmos principais
@@ -35,7 +35,7 @@ public class PaintPnl extends JPanel {
   private Point point0;
   private int normalized[];
   private JFrame parent;
-  private Curve curveCurrentObj;
+  private Hermite curveCurrentObj;
   private int clicks;
 
   private ArrayList<LineSegment> lines;
@@ -217,20 +217,20 @@ public class PaintPnl extends JPanel {
 
           case 12:
             if (clicks == 0) {
-              curveCurrentObj = new Curve(getInstance());
-              curveCurrentObj.setP1(new Point(e.getPoint()));
+              curveCurrentObj = new Hermite(getInstance());
+              curveCurrentObj.setP0(new Point(e.getPoint()));
 
               clicks++;
             } else if (clicks == 1) {
-              curveCurrentObj.setP2(new Point(e.getPoint()));
+              curveCurrentObj.setP1(new Point(e.getPoint()));
 
               clicks++;
             } else if (clicks == 2) {
-              curveCurrentObj.setP3(new Point(e.getPoint()));
+              curveCurrentObj.setP2(new Point(e.getPoint()));
               clicks++;
             } else {
-              curveCurrentObj.setP4(new Point(e.getPoint()));
-              curveCurrentObj.StartHermiteCurve();
+              curveCurrentObj.setP3(new Point(e.getPoint()));
+              curveCurrentObj.steps(0.001);
               clicks = 0;
             }
 
@@ -372,7 +372,7 @@ public class PaintPnl extends JPanel {
    * @param int, Coordenada x do ponto final de selecao do evento
    * @param int, Coordenada y do ponto final de selecao do evento
    */
-  private void Bresenham(int x0, int y0, int x1, int y1) {
+  public void Bresenham(int x0, int y0, int x1, int y1) {
     int dx, dy, x, y, i, const1, const2, p, incrx, incry;
     dx = x1 - x0;
     dy = y1 - y0;
