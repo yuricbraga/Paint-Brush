@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import helpers.*;
 import clipping.*;
 import curves.hermite.Curve;
+import curves.bezier.Bezier;
 
 /**
  * Classe que implementa os algoritmos principais
@@ -35,8 +36,11 @@ public class PaintPnl extends JPanel {
   private Point point0;
   private int normalized[];
   private JFrame parent;
+  // Hermite
   private Curve curveCurrentObj;
   private int clicks;
+  // Bezier
+  private Bezier curveBezier;
 
   private ArrayList<LineSegment> lines;
   private LineClipper clipper;
@@ -235,6 +239,25 @@ public class PaintPnl extends JPanel {
             }
 
             break;
+
+          case 13:
+            if (clicks == 0) {
+              curveBezier = new Bezier(getInstance());
+              curveBezier.setP0(new Point(e.getPoint()));
+              clicks++;
+            } else if (clicks == 1) {
+              curveBezier.setP1(new Point(e.getPoint()));
+              clicks++;
+            } else if (clicks == 2) {
+              curveBezier.setP2(new Point(e.getPoint()));
+              clicks++;
+            } else {
+              curveBezier.setP3(new Point(e.getPoint()));
+              curveBezier.steps(0.001);
+
+              clicks = 0;
+            }
+            break;
         }
         repaint();
       }
@@ -372,7 +395,7 @@ public class PaintPnl extends JPanel {
    * @param int, Coordenada x do ponto final de selecao do evento
    * @param int, Coordenada y do ponto final de selecao do evento
    */
-  private void Bresenham(int x0, int y0, int x1, int y1) {
+  public void Bresenham(int x0, int y0, int x1, int y1) {
     int dx, dy, x, y, i, const1, const2, p, incrx, incry;
     dx = x1 - x0;
     dy = y1 - y0;

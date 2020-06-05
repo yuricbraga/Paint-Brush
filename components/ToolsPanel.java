@@ -40,7 +40,8 @@ public class ToolsPanel extends JPanel {
   private void createButtons() {
     String hintText[] = { "Pincel", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover",
         "Selecionar e rotacionar", "Selecionar e refletir", "Selecionar e redimensionar",
-        "Recorte de retas (Cohen-Sutherland)", "Recorte de retas (Liang-Barsky)", "Borracha", "Curva (Hermite)" };
+        "Recorte de retas (Cohen-Sutherland)", "Recorte de retas (Liang-Barsky)", "Borracha", "Curva (Hermite)",
+        "Curva (Bezier)" };
     int i = 0;
 
     for (String x : hintText) {
