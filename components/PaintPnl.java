@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import helpers.*;
 import clipping.*;
+import curves.hermite.Curve;
 
 /**
  * Classe que implementa os algoritmos principais
@@ -34,6 +35,8 @@ public class PaintPnl extends JPanel {
   private Point point0;
   private int normalized[];
   private JFrame parent;
+  private Curve curveCurrentObj;
+  private int clicks;
 
   private ArrayList<LineSegment> lines;
   private LineClipper clipper;
@@ -210,6 +213,27 @@ public class PaintPnl extends JPanel {
 
           case 11:
             configurations.setPixelSize(2);
+            break;
+
+          case 12:
+            if (clicks == 0) {
+              curveCurrentObj = new Curve(getInstance());
+              curveCurrentObj.setP1(new Point(e.getPoint()));
+
+              clicks++;
+            } else if (clicks == 1) {
+              curveCurrentObj.setP2(new Point(e.getPoint()));
+
+              clicks++;
+            } else if (clicks == 2) {
+              curveCurrentObj.setP3(new Point(e.getPoint()));
+              clicks++;
+            } else {
+              curveCurrentObj.setP4(new Point(e.getPoint()));
+              curveCurrentObj.StartHermiteCurve();
+              clicks = 0;
+            }
+
             break;
         }
         repaint();
@@ -568,7 +592,7 @@ public class PaintPnl extends JPanel {
    * @param int, coordenada x do pixel
    * @param int, coordenada y do pixel
    */
-  private void setPixel(int x, int y) {
+  public void setPixel(int x, int y) {
     if (x >= 0 && x < 800 && y >= 0 && y < 600) {
       this.canvas[x][y] = configurations.getColor();
     }
@@ -592,4 +616,7 @@ public class PaintPnl extends JPanel {
     return copy;
   }
 
+  private PaintPnl getInstance() {
+    return this;
+  }
 }
