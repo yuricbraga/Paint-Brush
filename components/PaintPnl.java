@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import helpers.*;
 import clipping.*;
+import curves.bezier.Bezier;
 import curves.hermite.Hermite;
 
 /**
@@ -37,6 +38,8 @@ public class PaintPnl extends JPanel {
   private JFrame parent;
   private Hermite curveCurrentObj;
   private int clicks;
+  // Bezier
+  private Bezier curveBezier;
 
   private ArrayList<LineSegment> lines;
   private LineClipper clipper;
@@ -234,6 +237,25 @@ public class PaintPnl extends JPanel {
               clicks = 0;
             }
 
+            break;
+
+          case 13:
+            if (clicks == 0) {
+              curveBezier = new Bezier(getInstance());
+              curveBezier.setP0(new Point(e.getPoint()));
+              clicks++;
+            } else if (clicks == 1) {
+              curveBezier.setP1(new Point(e.getPoint()));
+              clicks++;
+            } else if (clicks == 2) {
+              curveBezier.setP2(new Point(e.getPoint()));
+              clicks++;
+            } else {
+              curveBezier.setP3(new Point(e.getPoint()));
+              curveBezier.steps(0.001);
+
+              clicks = 0;
+            }
             break;
         }
         repaint();
