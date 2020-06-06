@@ -41,7 +41,7 @@ public class ToolsPanel extends JPanel {
     String hintText[] = { "Pincel", "Linha (DDA)", "Linha (Bresenham)", "Retângulo", "Círculo", "Selecionar e mover",
         "Selecionar e rotacionar", "Selecionar e refletir", "Selecionar e redimensionar",
         "Recorte de retas (Cohen-Sutherland)", "Recorte de retas (Liang-Barsky)", "Borracha", "Curva (Hermite)",
-        "Curva (Bezier)" };
+        "Curva (Bezier)", "Curva Interpolada" };
     int i = 0;
 
     for (String x : hintText) {

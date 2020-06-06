@@ -14,6 +14,7 @@ import helpers.*;
 import clipping.*;
 import curves.bezier.Bezier;
 import curves.hermite.Hermite;
+import curves.interpolated.InterpolatedCurve;
 
 /**
  * Classe que implementa os algoritmos principais
@@ -36,10 +37,14 @@ public class PaintPnl extends JPanel {
   private Point point0;
   private int normalized[];
   private JFrame parent;
-  private Hermite curveCurrentObj;
+  // Curves
   private int clicks;
+  // Hermite
+  private Hermite curveCurrentObj;
   // Bezier
   private Bezier curveBezier;
+  // Interpolated
+  private InterpolatedCurve interpolatedCurve;
 
   private ArrayList<LineSegment> lines;
   private LineClipper clipper;
@@ -255,6 +260,26 @@ public class PaintPnl extends JPanel {
               curveBezier.steps(0.001);
 
               clicks = 0;
+            }
+            break;
+
+          case 14:
+            if (clicks == 0) {
+              interpolatedCurve = new InterpolatedCurve(getInstance());
+              interpolatedCurve.setP0(new Point(e.getPoint()));
+              clicks++;
+
+            } else if (clicks == 1) {
+              interpolatedCurve.setP1(new Point(e.getPoint()));
+              clicks++;
+            } else if (clicks == 2) {
+              interpolatedCurve.setP2(new Point(e.getPoint()));
+              clicks++;
+            } else {
+              interpolatedCurve.setP3(new Point(e.getPoint()));
+              interpolatedCurve.steps(0.001);
+              clicks = 0;
+
             }
             break;
         }
