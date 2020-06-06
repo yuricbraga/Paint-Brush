@@ -13,7 +13,7 @@ import java.awt.*;
  */
 public class Hermite {
   private PaintPnl paintPnl;
-  private Point P0, P1, P2, P3;
+  private Point P0, P1, P2, P3, P2Copy, P3Copy;
 
   public Hermite(PaintPnl paintPnl) {
     this.paintPnl = paintPnl;
@@ -29,10 +29,12 @@ public class Hermite {
 
   public void setP2(Point p2) {
     P2 = p2;
+    P2Copy = new Point(P2);
   }
 
   public void setP3(Point p3) {
     P3 = p3;
+    P3Copy = new Point(P3);
   }
 
   /*--------------------------------------------------------------------------
@@ -65,8 +67,8 @@ public class Hermite {
 
   public void steps(double step) {
     // Compute Vector
-    P2 = new Point(P2.x - P0.x, P2.y - P0.y);
-    P3 = new Point(P3.x - P1.x, P3.y - P1.y);
+    P2 = new Point(P2Copy.x - P0.x, P2Copy.y - P0.y);
+    P3 = new Point(P3Copy.x - P1.x, P3Copy.y - P1.y);
 
     Point array[] = cubic();
 

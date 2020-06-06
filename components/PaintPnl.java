@@ -41,6 +41,7 @@ public class PaintPnl extends JPanel {
   private int clicks;
   // Hermite
   private Hermite curveCurrentObj;
+  private Hermite curveHermite;
   // Bezier
   private Bezier curveBezier;
   // Interpolated
@@ -105,6 +106,22 @@ public class PaintPnl extends JPanel {
             point0 = e.getPoint();
             configurations.setColor(CUSTOMBLACK);
             canvasCopy = cloneMatrix(canvas);
+            break;
+
+          case 12:
+            canvasCopy = cloneMatrix(canvas);
+            curveHermite = new Hermite(getInstance());
+            Point tmp = new Point(e.getPoint());
+            curveHermite.setP0(tmp);
+            curveHermite.setP2(tmp);
+            break;
+
+          case 120:
+            curveHermite.setP2(new Point(e.getPoint()));
+            break;
+
+          case 121:
+            curveHermite.setP3(new Point(e.getPoint()));
             break;
 
           default:
@@ -224,6 +241,18 @@ public class PaintPnl extends JPanel {
             break;
 
           case 12:
+            configurations.setMODE(120);
+            break;
+
+          case 120:
+            configurations.setMODE(121);
+            break;
+
+          case 121:
+            configurations.setMODE(12);
+            break;
+
+          case 12000:
             if (clicks == 0) {
               curveCurrentObj = new Hermite(getInstance());
               curveCurrentObj.setP0(new Point(e.getPoint()));
@@ -340,6 +369,26 @@ public class PaintPnl extends JPanel {
             normalized = normalizeCoordinates(point0.x, point0.y, e.getX(), e.getY());
             rectBresenham(normalized[0], normalized[1], normalized[2], normalized[3]);
             selectRegion(normalized[0], normalized[1], normalized[2], normalized[3]);
+            break;
+
+          case 12:
+            canvas = cloneMatrix(canvasCopy);
+            Point tmp = new Point(e.getPoint());
+            curveHermite.setP1(tmp);
+            curveHermite.setP3(tmp);
+            curveHermite.steps(0.001);
+            break;
+
+          case 120:
+            canvas = cloneMatrix(canvasCopy);
+            curveHermite.setP2(new Point(e.getPoint()));
+            curveHermite.steps(0.001);
+            break;
+
+          case 121:
+            canvas = cloneMatrix(canvasCopy);
+            curveHermite.setP3(new Point(e.getPoint()));
+            curveHermite.steps(0.001);
             break;
 
           default:
