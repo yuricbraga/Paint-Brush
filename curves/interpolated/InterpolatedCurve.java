@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
- Interpolated Curve: Drawing Curve using Interpolated Curve Algorithm
- * Advanced Computer Graphics
- * Written by: Saul G.C. Melo
+ * Algoritmo para Curvas Interpolados
+ * Yuri Braga, Saul Melo, Ian Rodrigues
  */
 package curves.interpolated;
 
@@ -9,7 +8,7 @@ import components.PaintPnl;
 import java.awt.*;
 
 /*------------------------------------------------------------------------------
- * Class InterpolatedCurve using Bresenham between points
+ * Classe para a contrução de uma curva Bezier utilizando as logicas de breseham
  */
 public class InterpolatedCurve {
   PaintPnl paintPnl;
@@ -17,33 +16,27 @@ public class InterpolatedCurve {
 
   public InterpolatedCurve(PaintPnl paintPnl) {
     this.paintPnl = paintPnl;
-  }
+  }//
 
   public void setP0(Point p0) {
     P0 = p0;
-  }
+  }//
 
   public void setP1(Point p1) {
     P1 = p1;
 
-  }
+  }//
 
   public void setP2(Point p2) {
     P2 = p2;
-  }
+  }//
 
   public void setP3(Point p3) {
     P3 = p3;
-  }
+  }//
 
   /*--------------------------------------------------------------------------
-   *  Compute Interpolated Cubic Points
-   *  +-----------------+   +-----------+
-   *  | -4.5   13.5  -13.5   4.5 |   |  x0   y0  |
-   *  |  9    -22.5   18    -4.5 | * |  x1   y1  | * [t^3 t^2 t 1] = [x, y]
-   *  | -5.5   9     -4.5    1   |   |  x2   y2  |
-   *  |  1     0      0       0  |   |  x3   y3  |
-   *  +-----------------+   +-----------+
+   *  Pontos Cubicos interpolados
    -------------------------------------------------------------------------*/
 
   public Point[] cubic() {
@@ -67,7 +60,7 @@ public class InterpolatedCurve {
 
     return array;
 
-  }
+  }//
   /*------------------------------------------------------------------------
    * Create Steps Method
    * Increasing steps make curve smooth
@@ -87,15 +80,15 @@ public class InterpolatedCurve {
 
       paintPnl.setPixel(array2[i].x, array2[i].y);
       i++;
-    }
+    }//
 
     int j;
     for (j = 0; j < (int) (1 / step) - 1; j++) {
 
       paintPnl.Bresenham(array2[j].x, array2[j].y, array2[j + 1].x, array2[j + 1].y);
-    }
+    }//
 
-  }
-}
+  }//
+}//
 
 /*----------------------------------------------------------------------------*/
