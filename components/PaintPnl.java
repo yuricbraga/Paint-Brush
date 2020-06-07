@@ -139,6 +139,21 @@ public class PaintPnl extends JPanel {
             curveBezier.setP2(new Point(e.getPoint()));
             break;
 
+          case 14:
+            canvasCopy = cloneMatrix(canvas);
+            interpolatedCurve = new InterpolatedCurve(getInstance());
+            interpolatedCurve.setP0(new Point(e.getPoint()));
+            interpolatedCurve.setP1(new Point(e.getPoint()));
+            break;
+
+          case 140:
+            interpolatedCurve.setP1(new Point(e.getPoint()));
+            break;
+
+          case 141:
+            interpolatedCurve.setP2(new Point(e.getPoint()));
+            break;
+
           default:
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
@@ -279,6 +294,18 @@ public class PaintPnl extends JPanel {
             configurations.setMODE(13);
             break;
 
+          case 14:
+            configurations.setMODE(140);
+            break;
+
+          case 140:
+            configurations.setMODE(141);
+            break;
+
+          case 141:
+            configurations.setMODE(14);
+            break;
+
           case 12000:
             if (clicks == 0) {
               curveCurrentObj = new Hermite(getInstance());
@@ -319,7 +346,7 @@ public class PaintPnl extends JPanel {
             }
             break;
 
-          case 14:
+          case 14000:
             if (clicks == 0) {
               interpolatedCurve = new InterpolatedCurve(getInstance());
               interpolatedCurve.setP0(new Point(e.getPoint()));
@@ -435,6 +462,25 @@ public class PaintPnl extends JPanel {
             canvas = cloneMatrix(canvasCopy);
             curveBezier.setP2(new Point(e.getPoint()));
             curveBezier.steps(0.001);
+            break;
+
+          case 14:
+            canvas = cloneMatrix(canvasCopy);
+            interpolatedCurve.setP2(new Point(e.getPoint()));
+            interpolatedCurve.setP3(new Point(e.getPoint()));
+            interpolatedCurve.steps(0.001);
+            break;
+
+          case 140:
+            canvas = cloneMatrix(canvasCopy);
+            interpolatedCurve.setP1(new Point(e.getPoint()));
+            interpolatedCurve.steps(0.001);
+            break;
+
+          case 141:
+            canvas = cloneMatrix(canvasCopy);
+            interpolatedCurve.setP2(new Point(e.getPoint()));
+            interpolatedCurve.steps(0.001);
             break;
 
           default:
