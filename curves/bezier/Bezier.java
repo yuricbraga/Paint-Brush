@@ -50,7 +50,7 @@ public class Bezier {
 
  /*------------------------------------------------------------------------
    * Metodo steps que 
-   * auxiliam na suaviade da curva
+   * auxiliam na suavidade da curva
    */
   public void steps(double step) {
     Point array[] = cubic();
@@ -70,7 +70,7 @@ public class Bezier {
       paintPnl.Bresenham(array2[j].x, array2[j].y, array2[j + 1].x, array2[j + 1].y);
     }
 
-    // Draw the last line to the end point
+    // Chamada  para o desenho da curva
     paintPnl.Bresenham(array2[j].x, array2[j].y, P3.x, P3.y);
 
   }
