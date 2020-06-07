@@ -124,6 +124,21 @@ public class PaintPnl extends JPanel {
             curveHermite.setP3(new Point(e.getPoint()));
             break;
 
+          case 13:
+            canvasCopy = cloneMatrix(canvas);
+            curveBezier = new Bezier(getInstance());
+            curveBezier.setP0(new Point(e.getPoint()));
+            curveBezier.setP1(new Point(e.getPoint()));
+            break;
+
+          case 130:
+            curveBezier.setP1(new Point(e.getPoint()));
+            break;
+
+          case 131:
+            curveBezier.setP2(new Point(e.getPoint()));
+            break;
+
           default:
             canvasCopy = cloneMatrix(canvas);
             point0 = e.getPoint();
@@ -252,6 +267,18 @@ public class PaintPnl extends JPanel {
             configurations.setMODE(12);
             break;
 
+          case 13:
+            configurations.setMODE(130);
+            break;
+
+          case 130:
+            configurations.setMODE(131);
+            break;
+
+          case 131:
+            configurations.setMODE(13);
+            break;
+
           case 12000:
             if (clicks == 0) {
               curveCurrentObj = new Hermite(getInstance());
@@ -273,7 +300,7 @@ public class PaintPnl extends JPanel {
 
             break;
 
-          case 13:
+          case 13000:
             if (clicks == 0) {
               curveBezier = new Bezier(getInstance());
               curveBezier.setP0(new Point(e.getPoint()));
@@ -389,6 +416,25 @@ public class PaintPnl extends JPanel {
             canvas = cloneMatrix(canvasCopy);
             curveHermite.setP3(new Point(e.getPoint()));
             curveHermite.steps(0.001);
+            break;
+
+          case 13:
+            canvas = cloneMatrix(canvasCopy);
+            curveBezier.setP2(new Point(e.getPoint()));
+            curveBezier.setP3(new Point(e.getPoint()));
+            curveBezier.steps(0.001);
+            break;
+
+          case 130:
+            canvas = cloneMatrix(canvasCopy);
+            curveBezier.setP1(new Point(e.getPoint()));
+            curveBezier.steps(0.001);
+            break;
+
+          case 131:
+            canvas = cloneMatrix(canvasCopy);
+            curveBezier.setP2(new Point(e.getPoint()));
+            curveBezier.steps(0.001);
             break;
 
           default:
