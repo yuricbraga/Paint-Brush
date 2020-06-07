@@ -9,7 +9,7 @@ import java.awt.*;
 import components.PaintPnl;
 
 /*------------------------------------------------------------------------------
- * Classe para acontrução de uma curva Bezier utilizando as logicas de breseham
+ * Classe para a contrução de uma curva Bezier utilizando as logicas de breseham
  */
 public class Bezier {
   private PaintPnl paintPnl;
