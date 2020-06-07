@@ -16,25 +16,25 @@ public class Hermite {
 
   public Hermite(PaintPnl paintPnl) {
     this.paintPnl = paintPnl;
-  }
+  }//
 
   public void setP0(Point p0) {
     P0 = p0;
-  }
+  }//
 
   public void setP1(Point p1) {
     P1 = p1;
-  }
+  }//
 
   public void setP2(Point p2) {
     P2 = p2;
     P2Copy = new Point(P2);
-  }
+  }//
 
   public void setP3(Point p3) {
     P3 = p3;
     P3Copy = new Point(P3);
-  }
+  }//
 
   /*--------------------------------------------------------------------------
    * Pontos Cúbicos Hemite
@@ -51,7 +51,7 @@ public class Hermite {
 
     return array;
 
-  }
+  }//
   /*------------------------------------------------------------------------
    * Metodo steps que 
    * auxiliam na suavidade da curva
