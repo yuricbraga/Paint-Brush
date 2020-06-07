@@ -1,7 +1,6 @@
 /*------------------------------------------------------------------------------
- * Hermite Curve: Drawing Curve using Hermite Algorithm
- * Advanced Computer Graphics
- * Written by: Kevin T. Duraj
+ * Algoritmo para Curvas de Hemrite
+ * Yuri Braga, Saul Melo, Ian Rodrigues
  */
 package curves.hermite;
 
@@ -9,7 +8,7 @@ import components.PaintPnl;
 import java.awt.*;
 
 /*------------------------------------------------------------------------------
- * Class Hermite using Bresenham between points
+ * Classe para construção de uma curva hermite
  */
 public class Hermite {
   private PaintPnl paintPnl;
@@ -38,13 +37,7 @@ public class Hermite {
   }
 
   /*--------------------------------------------------------------------------
-   *  Compute Hemite Cubic Points Derivatives 
-   *  +-----------------+   +-----------+
-   *  |  2  -2   1   1  |   |  x0   y0  |
-   *  | -3   3  -2  -1  | * |  x1   y1  | * [t^3 t^2 t 1] = [x, y]
-   *  |  0   0   1   0  |   |  x'0  y'0 |
-   *  |  1   0   0   0  |   |  x'1  y'1 |
-   *  +-----------------+   +-----------+
+   * Pontos Cúbicos Hemite
    -------------------------------------------------------------------------*/
 
   public Point[] cubic() {
@@ -60,9 +53,8 @@ public class Hermite {
 
   }
   /*------------------------------------------------------------------------
-   * Create Steps Method
-   * Increasing steps make curve smooth
-   * Calculate "z" as 3rd dimension
+   * Metodo steps que 
+   * auxiliam na suaviade da curva
    */
 
   public void steps(double step) {
@@ -90,7 +82,7 @@ public class Hermite {
       paintPnl.Bresenham(array2[j].x, array2[j].y, array2[j + 1].x, array2[j + 1].y);
     }
 
-    // Draw the last line to the end point
+    // Chamada para o desenho da curva
 
     paintPnl.Bresenham(array2[j].x, array2[j].y, P1.x, P1.y);
 
