@@ -54,7 +54,7 @@ public class Hermite {
   }
   /*------------------------------------------------------------------------
    * Metodo steps que 
-   * auxiliam na suaviade da curva
+   * auxiliam na suavidade da curva
    */
 
   public void steps(double step) {
