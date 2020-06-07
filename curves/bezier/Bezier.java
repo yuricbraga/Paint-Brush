@@ -1,10 +1,15 @@
+/*------------------------------------------------------------------------------
+ * Algoritmo para Curvas de Bezier
+ * Yuri Braga, Saul Melo, Ian Rodrigues
+ */
+
 package curves.bezier;
 
 import java.awt.*;
 import components.PaintPnl;
 
 /*------------------------------------------------------------------------------
- * Class Bezier using Bresenham between points
+ * Classe para acontrução de uma curva Bezier utilizando as logicas de breseham
  */
 public class Bezier {
   private PaintPnl paintPnl;
@@ -30,13 +35,7 @@ public class Bezier {
     P3 = p3;
   }
   /*--------------------------------------------------------------------------
-   *  Compute Bezier Cubic Points Derivatives 
-   *  +-----------------+   +-----------+
-   *  | -1   3  -3   1  |   |  x0   y0  |
-   *  |  3  -6   3   0  | * |  x1   y1  | * [t^3 t^2 t 1] = [x, y]
-   *  | -3   3   0   0  |   |  x2   y2  |
-   *  |  1   0   0   0  |   |  x3   y3  |
-   *  +-----------------+   +-----------+
+   * Pontos Cubicos Bezier
    -------------------------------------------------------------------------*/
 
   public Point[] cubic() {
@@ -49,10 +48,9 @@ public class Bezier {
 
   }
 
-  /*------------------------------------------------------------------------
-   * Create Steps Method
-   * Increasing steps make curve smooth
-   * Calculate "z" as 3rd dimension
+ /*------------------------------------------------------------------------
+   * Metodo steps que 
+   * auxiliam na suaviade da curva
    */
   public void steps(double step) {
     Point array[] = cubic();
